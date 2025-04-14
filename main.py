@@ -19,13 +19,16 @@ async def start(update, context):
 
 
 async def help_command(update, context):
-    await update.message.reply_text("Доступные команды: /token <token доски>; ")
+    await update.message.reply_text("Доступные команды: /token <токен доски> ")
 
 
 async def token_command(update, context):
     token = update.message.text.split()[1]
     response = requests.get(f'https://keepthescore.com/api/{token}/board/')
     if response:
+        board_title = response.json()['board']['appearance']['title']
+        await update.message.reply_text(f"Отлично! Работаем с доской '{board_title}'")
+    else:
         await update.message.reply_text(f"Ответ сервера: {response.status_code}")
 
 
